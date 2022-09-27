@@ -31,6 +31,7 @@ if (!global.input || !global.output) {
     return;
 }
 
+// Debug events
 input.on('noteon', args => console.log('noteon', args));
 //input.on('poly aftertouch', args => console.log('poly aftertouch', args));
 input.on('cc', args => console.log('cc', args));
@@ -51,3 +52,70 @@ input.on('noteon', args => {
         channel: 0
     });
 })
+
+// STATE Stuff
+// initialise default state
+
+class MidiButton {
+    constructor(note) {
+        this.note = note;
+        this.noteColour = 'off';
+    }
+
+    setNoteColour = function (colour) {
+        this.noteColour = colour
+            output.send('noteon', {
+                note: this.note,
+                velocity: getVelocity(colour),
+                channel: 0
+            });
+
+    }
+}
+
+
+
+function getVelocity(noteType) {
+    switch (noteType) {
+        case 'red':   
+            return 15;
+
+        case 'yellow':
+            return 14;
+
+        case 'green':
+            return 13;
+
+        default:
+            return 12;
+    }
+}
+
+var testButtons = [];
+for(var i = 0; i < 121; i++) {
+    testButtons.push(new MidiButton(i));
+    testButtons[i].setNoteColour('red');
+}
+
+
+// fireworks show i think
+while (true) {
+    for(var i = 0; i < 121; i++) {
+    var button = Math.random(0, 121);
+    var colour = ''
+    switch (Math.random(1, 4)) {
+        case 1:
+            colour = 'red';
+        case 2:
+            colour = 'green';
+        case 3:
+            colour = 'yellow';
+        case 4:
+            colour = 'blue';
+        default:
+            break;
+    }
+    testButtons[button].setNoteColour(colour);
+    }
+
+}
