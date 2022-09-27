@@ -41,3 +41,13 @@ input.on('cc', args => console.log('cc', args));
 //input.on('mtc', args => console.log('mtc', args));
 //input.on('select', args => console.log('select', args));
 //input.on('sysex', args => console.log('sysex', args));
+
+
+input.on('noteon', args => {
+    // highlight note being pressed
+    output.send('noteon', {
+        note: args.note,
+        velocity: args.velocity === 127 ? 15 : 12, // change colour based on velocity
+        channel: 0
+    });
+})
