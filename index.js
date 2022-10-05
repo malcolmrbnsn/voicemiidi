@@ -59,63 +59,45 @@ input.on('noteon', args => {
 class MidiButton {
     constructor(note) {
         this.note = note;
-        this.noteColour = 'off';
+        this.noteVelocity = 0;
+        this.setNoteVelocity(12);
     }
 
-    setNoteColour = function (colour) {
-        this.noteColour = colour
+    setNoteVelocity = function (velocity) {
+        this.noteVelocity = velocity
             output.send('noteon', {
                 note: this.note,
-                velocity: getVelocity(colour),
+                velocity,
                 channel: 0
             });
-
-    }
-}
-
-
-
-function getVelocity(noteType) {
-    switch (noteType) {
-        case 'red':   
-            return 15;
-
-        case 'yellow':
-            return 14;
-
-        case 'green':
-            return 13;
-
-        default:
-            return 12;
     }
 }
 
 var testButtons = [];
 for(var i = 0; i < 121; i++) {
     testButtons.push(new MidiButton(i));
-    testButtons[i].setNoteColour('red');
+    // testButtons[i].setNoteVelocity(15);
 }
 
 
-// fireworks show i think
-while (true) {
-    for(var i = 0; i < 121; i++) {
-    var button = Math.random(0, 121);
-    var colour = ''
-    switch (Math.random(1, 4)) {
-        case 1:
-            colour = 'red';
-        case 2:
-            colour = 'green';
-        case 3:
-            colour = 'yellow';
-        case 4:
-            colour = 'blue';
-        default:
-            break;
-    }
-    testButtons[button].setNoteColour(colour);
-    }
+// // fireworks show i think
+// while (true) {
+//     for(var i = 0; i < 121; i++) {
+//     var button = Math.random(0, 121);
+//     var colour = ''
+//     switch (Math.random(1, 4)) {
+//         case 1:
+//             colour = 'red';
+//         case 2:
+//             colour = 'green';
+//         case 3:
+//             colour = 'yellow';
+//         case 4:
+//             colour = 'blue';
+//         default:
+//             break;
+//     }
+//     testButtons[button].setNoteColour(colour);
+//     }
 
-}
+// }
